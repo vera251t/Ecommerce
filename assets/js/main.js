@@ -16,7 +16,7 @@ window.addEventListener("load", function () {
     setTimeout(function () {
         const contentLoadingHTML = document.querySelector(".loading");
         contentLoadingHTML.classList.add("loading__none");
-    }, 2000);
+    }, 1000);
 });
 
 
@@ -301,6 +301,3 @@ async function main() {
 window.addEventListener("load", function () {
     main();
 })
-
-
-/**/

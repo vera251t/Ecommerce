@@ -71,6 +71,7 @@ img {
     opacity: 1;
     visibility: visible;
     transition: opacity 1s, visibility 1s;
+    z-index: 9999;
 }
 
 .loading__none {
@@ -85,17 +86,16 @@ img {
     animation: animationLoad 3s infinite;
 }
 
-
 /*----Nav---*/
 header {
     height: var(--h-header);
     background-color: transparent;
-    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     padding: 0 1rem;
     z-index: 1000;
+    position: fixed;
 }
 
 .navbar--scroll {
@@ -517,6 +517,7 @@ footer span {
 
     /*Menu*/
     .menu {
+        margin-right: 38rem;
         list-style: none;
         display: flex;
         flex-direction: row;
