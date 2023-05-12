@@ -1,7 +1,7 @@
 async function getProducts() {
     try {
         const data = await fetch('https://ecommercebackend.fundamentos-29.repl.co/');
-        
+
         const res = await data.json();
 
         window.localStorage.setItem("products", JSON.stringify(res));
@@ -39,27 +39,27 @@ function dark() {
     let toggle = document.getElementById("toggle");
     let label_toggle = document.getElementById("label_toggle");
     let isDark = localStorage.getItem("darkMode") === "true";
-  
+
     function updateDarkMode() {
-      let checked = toggle.checked;
-      document.body.classList.toggle("dark", checked);
-      label_toggle.innerHTML = checked ? `<i class='bx bx-sun'></i>` : `<i class='bx bx-moon'></i>`;
-      localStorage.setItem("darkMode", checked);
+        let checked = toggle.checked;
+        document.body.classList.toggle("dark", checked);
+        label_toggle.innerHTML = checked ? `<i class='bx bx-sun'></i>` : `<i class='bx bx-moon'></i>`;
+        localStorage.setItem("darkMode", checked);
     }
-  
+
     toggle.checked = isDark;
     updateDarkMode();
-  
+
     toggle.addEventListener("click", updateDarkMode);
 }
 
 function printProducts(db) {
     const productsHTML = document.querySelector(".products");
-    
+
     let html = "";
 
-    for (const {quantity, category, id, image, name, price} of db.products) {
-        
+    for (const { quantity, category, id, image, name, price } of db.products) {
+
         const buttomAdd = quantity
             ? `<i class='bx bx-plus' id='${id}'></i>`
             : "<span class='soldOut'>sold out</span>"
@@ -70,7 +70,7 @@ function printProducts(db) {
             </div>
 
             <div class="product__info">
-                <h4>${name} | <span><b>Stock</b>: ${quantity}</span></h4>
+                <h4 id="${id}">${name} | <span><b>Stock</b>: ${quantity}</span></h4>
                 <h5>
                     $${price}
                     ${buttomAdd}
@@ -84,6 +84,42 @@ function printProducts(db) {
     console.log(html);
 
     productsHTML.innerHTML = html;
+}
+
+function PrintModal() {
+    const modal = document.querySelector('.modal');
+    const modalContent = document.querySelector('.modal-content');
+    const products = document.querySelectorAll('.product');
+    
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+      const productId = product.querySelector('h4').getAttribute('id');
+      const productName = product.querySelector('h4').innerText;
+      const productPrice = product.querySelector('h5').innerText;
+      const productImage = product.querySelector('img').getAttribute('src');
+    
+      product.addEventListener('click', () => {
+        let html = `
+          <div class="modal" id="${productId}">
+            <i class='bx bx-x-circle'></i>
+            <img src="${productImage}" alt="imagen">
+            <h3>${productName}</h3>
+            <p>${productPrice}</p>
+            <i class='plus bx bx-plus'></i>
+          </div>
+        `;
+        modalContent.innerHTML = html;
+    
+        modalContent.classList.add('show');
+      });
+    }
+    
+    modalContent.addEventListener('click', (e) => {
+      if (e.target.classList.contains('bx-x-circle') || e.target.classList.contains('bx-plus')) {
+        modalContent.style.display = 'none';
+      }
+    });
+    
 }
 
 function handleMixtup() {
@@ -101,7 +137,7 @@ function handleShowCart() {
     const iconCartHTML = document.querySelector(".bx-shopping-bag");
     const cartHTML = document.querySelector(".cart");
 
-    iconCartHTML.addEventListener("click", function() {
+    iconCartHTML.addEventListener("click", function () {
         cartHTML.classList.toggle("cart__show");
     });
 }
@@ -141,7 +177,7 @@ function printProductsInCart(db) {
 
     for (const product in db.cart) {
         const { quantity, price, name, image, id, amount } = db.cart[product];
-        
+
         html += `
             <div class="cart__product">
                 <div class="cart__product--img">
@@ -162,7 +198,7 @@ function printProductsInCart(db) {
             </div>
         `;
     }
-    
+
     cartProducts.innerHTML = html;
 }
 
@@ -230,10 +266,10 @@ function printTotal(db) {
 function handleTotal(db) {
     const btnBuy = document.querySelector(".btn__buy");
 
-    btnBuy.addEventListener("click", function() {
+    btnBuy.addEventListener("click", function () {
         if (!Object.values(db.cart).length)
             return alert("Pero tienes que tener algo en el carrito, no?");
-        
+
         const response = confirm("Seguro que quieres comprar?");
         if (!response) return;
 
@@ -270,7 +306,7 @@ function handlePrintAmountProducts(db) {
     const amountProducts = document.querySelector(".amountProducts");
 
     let amount = 0;
-    
+
     for (const product in db.cart) {
         amount += db.cart[product].amount;
     }
@@ -285,7 +321,7 @@ async function main() {
             (await getProducts()),
         cart: JSON.parse(window.localStorage.getItem("cart")) || {},
     }
-    
+
     printProducts(db);
     handleShowCart();
     addToCartFromProducts(db);
@@ -296,6 +332,7 @@ async function main() {
     handlePrintAmountProducts(db);
     handleMixtup();
     dark();
+    PrintModal();
 }
 
 window.addEventListener("load", function () {
