@@ -87,39 +87,40 @@ function printProducts(db) {
 }
 
 function PrintModal() {
-    const modal = document.querySelector('.modal');
-    const modalContent = document.querySelector('.modal-content');
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-content');
+    document.body.appendChild(modalContainer);
+
     const products = document.querySelectorAll('.product');
-    
+
     for (let i = 0; i < products.length; i++) {
-      const product = products[i];
-      const productId = product.querySelector('h4').getAttribute('id');
-      const productName = product.querySelector('h4').innerText;
-      const productPrice = product.querySelector('h5').innerText;
-      const productImage = product.querySelector('img').getAttribute('src');
+        const product = products[i];
+        const productId = product.querySelector('h4').getAttribute('id');
+        const productName = product.querySelector('h4').innerText;
+        const productPrice = product.querySelector('h5').innerText;
+        const productImage = product.querySelector('img').getAttribute('src');
+        const productNameElement = product.querySelector('h4');
     
-      product.addEventListener('click', () => {
-        let html = `
-          <div class="modal" id="${productId}">
-            <i class='bx bx-x-circle'></i>
-            <img src="${productImage}" alt="imagen">
-            <h3>${productName}</h3>
-            <p>${productPrice}</p>
-            <i class='plus bx bx-plus'></i>
-          </div>
-        `;
-        modalContent.innerHTML = html;
+        productNameElement.addEventListener('click', () => {
+            let html = `
+              <div class="modal" id="${productId}">
+                <i class='bx bx-x-circle close-icon'></i>
+                <img src="${productImage}" alt="imagen">
+                <h3 class="product-info">${productName}</h3>
+                <p class="product-info">${productPrice}</p>
+                <i class='plus bx bx-plus'></i>
+              </div>
+            `;
+            modalContainer.innerHTML = html;
     
-        modalContent.classList.add('show');
-      });
-    }
-    
-    modalContent.addEventListener('click', (e) => {
-      if (e.target.classList.contains('bx-x-circle') || e.target.classList.contains('bx-plus')) {
-        modalContent.style.display = 'none';
-      }
-    });
-    
+            modalContainer.classList.add('show');
+
+            const closeIcon = modalContainer.querySelector('.close-icon');
+            closeIcon.addEventListener('click', () => {
+              modalContainer.classList.remove('show');
+            });
+        });
+    }  
 }
 
 function handleMixtup() {

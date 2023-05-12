@@ -230,7 +230,6 @@ header i {
     top: 10px;
 }
 /*...............products.....*/
-
 .container2 {
     padding: 3rem;
 }
@@ -480,13 +479,8 @@ header i {
     max-width: 100%;
 }
     
-.product-info h2,
-.product-info h3 {
+.product-info {
     color: var(--black);
-}
-    
-.product-info p {
-    color: var(--botton);
 }
     
 .plus {
@@ -505,7 +499,7 @@ header i {
     cursor: pointer;
     border: none;
     margin-left: 14rem;
-    color: black;
+    color: var(--black);
   }
  
 /*--Footer----*/
